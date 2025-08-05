@@ -1,0 +1,70 @@
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+  var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  var tzInput = document.getElementById("user-timezone");
+  if (tzInput) {
+    tzInput.value = tz;
+  }
+});
+</script>
+
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+    <%= form_with(model: announcement, class: "contents") do |form| %>
+      <% if announcement.errors.any? %>
+        <div id="error_explanation" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md mb-6">
+          <h2 class="font-medium mb-2"><%= pluralize(announcement.errors.count, "error") %> prohibited this announcement from being saved:</h2>
+          <ul class="list-disc ml-6 text-sm">
+            <% announcement.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      
+      <%= form.hidden_field :timezone, id: "user-timezone" %>
+
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <div class="px-6 py-6 border-b border-gray-200">
+          <h3 class="text-lg font-semibold text-gray-900">Create a post</h3>
+        </div>
+
+        <div class="px-6 py-6 space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <%= form.label :posted_on, "Posted On", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <div class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md px-3 py-2">
+                <%= announcement.posted_on ? announcement.posted_on.strftime("%Y-%m-%d | %H:%M:%S") : Time.now.strftime("%Y-%m-%d | %H:%M:%S") %>
+              </div>
+            </div>
+            <div>
+              <%= form.label :username, "Posted By", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <div class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md px-3 py-2">
+                <%= current_user.username %>
+              </div>
+              <%= form.hidden_field :user_id, value: current_user.id %>
+            </div>
+          </div>
+          
+          <div>
+            <%= form.label :title, "Title", class: "block text-sm font-medium text-gray-700 mb-2" %>
+            <%= form.text_field :title, class: ["block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm", {"border-gray-300": announcement.errors[:title].none?, "border-red-300": announcement.errors[:title].any?}], placeholder: "Enter the title for your announcement/post", required: true %>
+          </div>
+          
+          <div>
+            <%= form.label :content, "Details", class: "block text-sm font-medium text-gray-700 mb-2" %>
+            <%= form.text_area :content, rows: "8", class: ["block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm", {"border-gray-300": announcement.errors[:content].none?, "border-red-300": announcement.errors[:content].any?}], placeholder: "Enter all the relevant details.", required: true %>
+          </div>
+        </div>
+
+        <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
+          <div class="flex justify-center">
+            <%= form.submit "Create Post", class: "inline-flex items-center justify-center font-medium tracking-tight rounded-lg border transition hover:scale-105 hover:-rotate-0 focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset h-11 px-6 text-lg text-white shadow focus:ring-white border-transparent bg-yellow-500 hover:bg-yellow-400 focus:bg-yellow-600 focus:ring-offset-yellow-600" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+

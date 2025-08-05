@@ -1,0 +1,101 @@
+<!-- Include this script tag or install `@tailwindplus/elements` via npm: -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script> -->
+<% nav_links = [
+  { name: "Post", path: new_announcement_path, class: "rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white", require_auth: true },
+  { name: "About Us", path: home_about_path , class: "rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" },
+  { name: "Announcements", path: announcements_path, class: "rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" },
+  
+] %>
+
+<nav class="bg-gray-800">
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <div class="relative flex h-16 items-center justify-between">
+      <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+        <!-- Mobile menu button-->
+        <button type="button" command="--toggle" commandfor="mobile-menu" class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-2 focus:ring-white focus:outline-hidden focus:ring-inset">
+          <span class="absolute -inset-0.5"></span>
+          <span class="sr-only">Open main menu</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 in-aria-expanded:hidden">
+            <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 not-in-aria-expanded:hidden">
+            <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
+      <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+        <div class="flex shrink-0 items-center">
+          <%= link_to root_path do %>
+            <%= image_tag("download.svg", alt: "SuVichaar logo", class: "h-8 w-auto") %>
+          <% end %>
+        
+        </div>
+        <!-- Desktop Navbar -->
+        <div class="hidden sm:ml-6 sm:block">
+          <div class="flex space-x-4">
+            <% nav_links.each do |link| %>
+              <% if !link[:require_auth] || user_signed_in? %>
+                <%= link_to link[:name], link[:path], class: link[:class] %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+        <!-- Search Box -->
+        <div class="relative">
+          <%= form_with(url: announcements_path, method: :get, local: true, class: "flex items-center") do |form| %>
+            <div class="relative">
+              <%= form.text_field :search, 
+                  placeholder: "Search announcements...", 
+                  value: params[:search],
+                  class: "w-64 pl-10 pr-4 py-2 text-sm bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </div>
+            </div>
+            <%= form.submit "Search", class: "ml-2 px-3 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800" %>
+          <% end %>
+        </div>
+
+        <!-- Profile dropdown -->
+        <div class="relative ml-3" data-controller="dropdown">
+          <button type="button" data-action="click->dropdown#toggle" class="relative flex rounded-full bg-gray-800 text-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800">
+            <span class="absolute -inset-1.5"></span>
+            <span class="sr-only">Open user menu</span>
+            <% if user_signed_in? %>
+              <%= image_tag "person-check.svg", alt: "User", class: "size-8" %>
+            <% else %>
+              <%= image_tag "person.svg", alt: "User", class: "size-8" %>
+            <% end %>
+            <span class="absolute -inset-1.5"></span>
+            <span class="sr-only">Open user menu</span> 
+          </button>
+
+          <div data-dropdown-target="menu" class="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none">
+            <% if user_signed_in? %>
+              <%= link_to "Account", edit_user_registration_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden" %>
+              <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden bg-transparent border-0" %>
+            <% else %>
+              <%= link_to "Sign In", new_user_session_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden" %>
+              <%= link_to "Sign Up", new_user_registration_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Navbar -->
+  <el-disclosure id="mobile-menu" hidden class="block sm:hidden">
+    <div class="space-y-1 px-2 pt-2 pb-3">
+      <% nav_links.each do |link| %>
+        <% if !link[:require_auth] || user_signed_in? %>
+          <%= link_to link[:name], link[:path], class: link[:class].sub("text-sm", "text-base block") %>
+        <% end %>
+      <% end %>
+    </div>
+  </el-disclosure>
+</nav>

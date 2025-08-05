@@ -1,0 +1,80 @@
+<% content_for :title, "Announcements" %>
+
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <% if notice.present? %>
+      <div class="mb-6">
+        <p class="py-2 px-3 bg-green-50 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+      </div>
+    <% end %>
+
+    <!-- Search Results Header -->
+    <% if params[:search].present? %>
+      <div class="mb-6 bg-blue-50 border border-blue-200 rounded-md p-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <span class="text-blue-800">
+              Search results for "<%= params[:search] %>" 
+              (<%= @announcements.count %> <%= 'result'.pluralize(@announcements.count) %>)
+            </span>
+          </div>
+          <%= link_to "Clear search", announcements_path, class: "text-blue-600 hover:text-blue-800 text-sm font-medium" %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-3xl font-bold text-gray-900">
+        <% if params[:search].present? %>
+          Search Results
+        <% else %>
+          Announcements
+        <% end %>
+      </h1>
+      
+      <% if user_signed_in? %>
+        <%= link_to "New Announcement", new_announcement_path, class: "inline-flex items-center justify-center font-medium tracking-tight rounded-lg border transition hover:scale-105 hover:-rotate-0 focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset h-11 px-4 text-lg text-white shadow focus:ring-white border-transparent bg-yellow-500 hover:bg-yellow-400 focus:bg-yellow-600 focus:ring-offset-yellow-600" %>
+      <% else %>
+        <div class="text-center">
+          <p class="text-gray-600 mb-2">Want to create an announcement?</p>
+          <%= link_to "Sign in to post", new_user_session_path, class: "inline-flex items-center justify-center font-medium tracking-tight rounded-lg border transition hover:scale-105 hover:-rotate-0 focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset h-11 px-4 text-lg text-white shadow focus:ring-white border-transparent bg-blue-500 hover:bg-blue-400 focus:bg-blue-600 focus:ring-offset-blue-600" %>
+        </div>
+      <% end %>
+    </div>
+
+    <div id="announcements" class="space-y-6">
+      <% if @announcements.any? %>
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <% @announcements.each do |announcement| %>
+            <%= render announcement %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-12">
+          <div class="mx-auto h-12 w-12 text-gray-400">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+          <h3 class="mt-2 text-sm font-medium text-gray-900">
+            <% if params[:search].present? %>
+              No results found
+            <% else %>
+              No announcements
+            <% end %>
+          </h3>
+          <p class="mt-1 text-sm text-gray-500">
+            <% if params[:search].present? %>
+              Try adjusting your search terms or <%= link_to "view all announcements", announcements_path, class: "text-blue-600 hover:text-blue-800" %>.
+            <% else %>
+              Get started by creating a new announcement.
+            <% end %>
+          </p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

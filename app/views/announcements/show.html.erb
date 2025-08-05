@@ -1,0 +1,44 @@
+<% content_for :title, "Showing announcement" %>
+
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div class="px-6 py-8">
+        <div class="space-y-6">
+          <div>
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">
+              <%= @announcement.title %>
+            </h1>
+            <div class="flex items-center text-sm text-gray-500 mb-6">
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+              Posted on <%= @announcement.posted_on.strftime("%Y-%m-%d %H:%M") if @announcement.posted_on %>
+              <% if @announcement.user.present? %>
+                by <span class="font-medium text-gray-900"><%= @announcement.user.username %></span>
+              <% elsif @announcement.created_by.present? %>
+                by <span class="font-medium text-gray-900"><%= @announcement.created_by %></span>
+              <% end %>
+            </div>
+          </div>
+          
+          <div class="prose max-w-none">
+            <div class="text-lg text-gray-700 leading-relaxed">
+              <%= simple_format(@announcement.content) %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
+        <div class="flex flex-col sm:flex-row justify-center gap-3">
+          <% if user_signed_in? %>
+            <%= link_to "Edit this announcement", edit_announcement_path(@announcement), class: "inline-flex items-center justify-center font-medium tracking-tight rounded-lg border transition hover:scale-105 hover:-rotate-0 focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset h-11 px-4 text-lg text-white shadow focus:ring-white border-transparent bg-yellow-500 hover:bg-yellow-400 focus:bg-yellow-600 focus:ring-offset-yellow-600" %>
+            <%= button_to "Destroy this announcement", @announcement, method: :delete, form_class: "inline-block", class: "inline-flex items-center justify-center font-medium tracking-tight rounded-lg border transition hover:scale-105 hover:-rotate-0 focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset h-11 px-4 text-lg text-white shadow focus:ring-white border-transparent bg-red-600 hover:bg-red-500 focus:bg-red-700 focus:ring-offset-red-700", data: { turbo_confirm: "Are you sure?" } %>
+          <% end %>
+          <%= link_to "Back to announcements", announcements_path, class: "inline-flex items-center justify-center font-medium tracking-tight rounded-lg border transition hover:scale-105 hover:-rotate-0 focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset h-11 px-4 text-lg text-white shadow focus:ring-white border-transparent bg-gray-500 hover:bg-gray-400 focus:bg-gray-600 focus:ring-offset-gray-600" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

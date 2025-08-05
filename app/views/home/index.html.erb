@@ -1,0 +1,123 @@
+<% if user_signed_in? %>   
+    <div class="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
+  <!-- Hero Section with background and SVG -->
+    <div class="relative isolate overflow-hidden bg-gray-900 w-full min-h-screen">
+    <svg class="absolute inset-0 -z-10 h-full w-full stroke-white/10 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]" aria-hidden="true">
+      <defs>
+        <pattern id="983e3e4c-de6d-4c3f-8d64-b9761d1534cc" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse">
+          <path d="M.5 200V.5H200" fill="none" />
+        </pattern>
+      </defs>
+      <svg x="50%" y="-1" class="overflow-visible fill-gray-800/20">
+        <path d="M-200 0h201v201h-201Z M600 0h201v201h-201Z M-400 600h201v201h-201Z M200 800h201v201h-201Z" stroke-width="0" />
+      </svg>
+      <rect width="100%" height="100%" stroke-width="0" fill="url(#983e3e4c-de6d-4c3f-8d64-b9761d1534cc)" />
+    </svg>
+    <div class="absolute left-[calc(50%-4rem)] top-10 -z-10 transform-gpu blur-3xl sm:left-[calc(50%-18rem)] lg:left-48 lg:top-[calc(50%-30rem)] xl:left-[calc(50%-24rem)]" aria-hidden="true">
+      <div class="aspect-[1108/632] w-[69.25rem] bg-gradient-to-r from-[#80caff] to-[#4f46e5] opacity-20" style="clip-path: polygon(73.6% 51.7%, 91.7% 11.8%, 100% 46.4%, 97.4% 82.2%, 92.5% 84.9%, 75.7% 64%, 55.3% 47.5%, 46.5% 49.4%, 45% 62.9%, 50.3% 87.2%, 21.3% 64.1%, 0.1% 100%, 5.4% 51.1%, 21.4% 63.9%, 58.9% 0.2%, 73.6% 51.7%)"></div>
+    </div>
+    <div class="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40">
+      <div class="mx-auto max-w-2xl flex-shrink-0 lg:mx-0 lg:max-w-xl lg:pt-8">
+        
+        <h2 class="text-lg font-semibold leading-8 text-gray-300">Welcome <%= current_user.username %></h2>
+        <h1 class="mt-10 text-4xl font-bold tracking-tight text-white sm:text-6xl">SuVichaar: Your Community Notice Board</h1>
+        <p class="mt-6 text-lg leading-8 text-gray-300">
+          Stay updated with announcements, local events, buy/sell/rent postings, and important contacts—all in one place. Designed for usability, clarity, and low maintenance.
+        </p>
+        <div class="mt-10 flex flex-row gap-4 justify-center">
+          <%= link_to "Read post", announcements_path, class: "rounded-full bg-indigo-500/10 px-20 py-1 text-sm font-semibold leading-6 text-cyan-500 ring-1 ring-inset ring-indigo-500/20 transition-all duration-200" %>
+        </div>
+        
+        
+        <div class="mt-6 text-left text-gray-200 text-sm">
+          <h2 class="font-bold text-lg mb-2">About SuVichaar</h2>
+          <ul class="list-disc ml-6">
+            <li>Digital notice board for announcements and updates</li>
+            <li>Sections for local events, buy/sell/rent (non-commercial), and important contacts</li>
+            <li>Easy posting for authorized admins and community leaders</li>
+            <li>Designed for usability, clarity, and low maintenance</li>
+            <li>Promote and connect your community effectively</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32">
+      <div">
+        <%= image_tag "community.svg",
+        alt: "Community",
+        width: 2432,
+        height: 1442,
+        class: "w-full max-w-[76rem] rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10" %>
+      </div>
+    </div>
+      </div>
+    </div>
+    </div>
+    </div>
+
+    
+    
+<% else %>
+    <div class="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
+  <!-- Hero Section with background and SVG -->
+  <div class="relative isolate overflow-hidden bg-gray-900 w-full min-h-screen">
+    <svg class="absolute inset-0 -z-10 h-full w-full stroke-white/10 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]" aria-hidden="true">
+      <defs>
+        <pattern id="983e3e4c-de6d-4c3f-8d64-b9761d1534cc" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse">
+          <path d="M.5 200V.5H200" fill="none" />
+        </pattern>
+      </defs>
+      <svg x="50%" y="-1" class="overflow-visible fill-gray-800/20">
+        <path d="M-200 0h201v201h-201Z M600 0h201v201h-201Z M-400 600h201v201h-201Z M200 800h201v201h-201Z" stroke-width="0" />
+      </svg>
+      <rect width="100%" height="100%" stroke-width="0" fill="url(#983e3e4c-de6d-4c3f-8d64-b9761d1534cc)" />
+    </svg>
+    <div class="absolute left-[calc(50%-4rem)] top-10 -z-10 transform-gpu blur-3xl sm:left-[calc(50%-18rem)] lg:left-48 lg:top-[calc(50%-30rem)] xl:left-[calc(50%-24rem)]" aria-hidden="true">
+      <div class="aspect-[1108/632] w-[69.25rem] bg-gradient-to-r from-[#80caff] to-[#4f46e5] opacity-20" style="clip-path: polygon(73.6% 51.7%, 91.7% 11.8%, 100% 46.4%, 97.4% 82.2%, 92.5% 84.9%, 75.7% 64%, 55.3% 47.5%, 46.5% 49.4%, 45% 62.9%, 50.3% 87.2%, 21.3% 64.1%, 0.1% 100%, 5.4% 51.1%, 21.4% 63.9%, 58.9% 0.2%, 73.6% 51.7%)"></div>
+    </div>
+    <div class="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40">
+      <div class="mx-auto max-w-2xl flex-shrink-0 lg:mx-0 lg:max-w-xl lg:pt-8">
+        
+        <div class="mt-24 sm:mt-32 lg:mt-16">
+          
+        </div>
+        <h1 class="mt-10 text-4xl font-bold tracking-tight text-white sm:text-6xl">SuVichaar: Your Community Notice Board</h1>
+        <p class="mt-6 text-lg leading-8 text-gray-300">
+          
+          Stay updated with announcements, local events, buy/sell/rent postings, and important contacts—all in one place. Designed for usability, clarity, and low maintenance.
+        </p>
+        <div class="mt-10 flex flex-row gap-4 justify-center">
+          <%= link_to "Sign Up", new_user_registration_path, class: "rounded-full bg-indigo-500/10 px-8 py-1 text-sm font-semibold leading-6 text-cyan-500 ring-1 ring-inset ring-indigo-500/20 transition-all duration-200" %>
+          <%= link_to "Log In", new_user_session_path, class: "rounded-full bg-indigo-500/10 px-10 py-1 text-sm font-semibold leading-6 text-cyan-500 ring-1 ring-inset ring-indigo-500/20 transition-all duration-200" %>
+        </div>
+        <div class="mt-4 flex justify-center">
+          <%= link_to "Continue as Guest", announcements_path, class: "inline-flex items-center space-x-2 text-sm font-medium leading-6 text-gray-300" %>
+        </div>
+        <p class="mt-8 text-gray-400 text-sm">
+          Not sure yet? <%= link_to "Learn more", home_about_path, class: "text-indigo-300 underline" %>
+        </p>
+        <div class="mt-6 text-left text-gray-200 text-sm">
+          <h2 class="font-bold text-lg mb-2">About SuVichaar</h2>
+          <ul class="list-disc ml-6">
+            <li>Digital notice board for announcements and updates</li>
+            <li>Sections for local events, buy/sell/rent (non-commercial), and important contacts</li>
+            <li>Easy posting for authorized admins and community leaders</li>
+            <li>Designed for usability, clarity, and low maintenance</li>
+            <li>Promote and connect your community effectively</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32">
+        <div">
+          <%= image_tag "community.svg",
+          alt: "Community",
+          width: 2432,
+          height: 1442,
+          class: "w-full max-w-[76rem] rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10" %>
+        </div>
+      </div>
+    </div>
+  </div>
+    </div>
+<% end %>
+
+
