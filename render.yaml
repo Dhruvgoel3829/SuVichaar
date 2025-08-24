@@ -1,19 +1,22 @@
 databases:
-  - name: postgres
-    ipAllowList: []
-    databaseName: suvichaar
-    user: dhruv
+  - name: mysite
+    databaseName: mysite
+    user: mysite
+    plan: free
+
 
 services:
   - type: web
-    name: dhruv
-    env: ruby
-    buildCommand: "./render-build.sh"
-    startCommand: "bundle exec rails s"
+    name: mysite
+    runtime: ruby
+    plan: free
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "bundle exec ./bin/dev"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: postgres
+          name: mysite
           property: connectionString
       - key: RAILS_MASTER_KEY
-        sync: false
+        sync:false- key: WEB_CONCURRENCY
+        value: 2
