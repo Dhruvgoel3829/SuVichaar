@@ -16,4 +16,8 @@ class User < ApplicationRecord
       errors.add(:username, "cannot be changed once set")
     end
   end
+
+  def admin?
+    self.admin
+  end
 end

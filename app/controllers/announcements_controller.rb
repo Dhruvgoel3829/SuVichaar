@@ -1,3 +1,5 @@
+=begin
+
 class AnnouncementsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_action :set_announcement, only: %i[ show edit update destroy ]
@@ -5,7 +7,7 @@ class AnnouncementsController < ApplicationController
   # GET /announcements or /announcements.json
   def index
     @announcements = Announcement.all
-    
+
     if params[:search].present?
       search_term = "%#{params[:search].downcase}%"
       @announcements = @announcements.joins(:user)
@@ -52,7 +54,7 @@ class AnnouncementsController < ApplicationController
     @announcement = Announcement.new(announcement_params)
     @announcement.posted_on = Time.current.in_time_zone(user_tz)
     @announcement.user_id = current_user.id if @announcement.user_id.blank?
-    
+
     if @announcement.save
       redirect_to @announcement, notice: "Announcement was successfully created."
     else
@@ -93,4 +95,106 @@ class AnnouncementsController < ApplicationController
     def announcement_params
       params.require(:announcement).permit(:title, :content, :created_by, :timezone, :user_id)
     end
+end
+=end
+
+class AnnouncementsController < ApplicationController
+  before_action :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy ]
+  before_action :set_announcement, only: [ :show, :edit, :update, :destroy ]
+  before_action :authorize_user!, only: [ :edit, :update, :destroy ]
+
+  # GET /announcements or /announcements.json
+  def index
+    @announcements = Announcement.all
+
+    if params[:search].present?
+      search_term = "%#{params[:search].downcase}%"
+      @announcements = @announcements.joins(:user)
+                                     .where("LOWER(announcements.title) LIKE ? OR LOWER(users.username) LIKE ?", search_term, search_term)
+                                     .distinct
+    end
+  end
+
+  # GET /announcements/1
+  def show
+  end
+
+  # GET /announcements/new
+  def new
+    @announcement = Announcement.new
+  end
+
+  # GET /announcements/1/edit
+  def edit
+  end
+
+  # POST /announcements
+  def create
+    user_tz = map_timezone(params[:announcement][:timezone])
+    Rails.logger.info "User timezone param: #{user_tz}"
+
+    @announcement = current_user.announcements.build(announcement_params)
+    @announcement.posted_on = Time.current.in_time_zone(user_tz)
+
+    if @announcement.save
+      redirect_to @announcement, notice: "Announcement was successfully created."
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  # PATCH/PUT /announcements/1
+  def update
+    if @announcement.update(announcement_params)
+      redirect_to @announcement, notice: "Announcement was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  # DELETE /announcements/1
+  def destroy
+    @announcement.destroy!
+    redirect_to announcements_path, notice: "Announcement was successfully destroyed.", status: :see_other
+  end
+
+  private
+
+  def set_announcement
+    @announcement = Announcement.find(params[:id])
+  end
+
+  def authorize_user!
+    # unless @announcement.user == current_user
+    #  redirect_to announcements_path, alert: "You are not authorized to do that."
+    # end
+
+    return if current_user.admin? || @announcement.user == current_user
+
+    redirect_to announcements_path, alert: "You are not authorized to perform this action."
+  end
+
+  def announcement_params
+    params.require(:announcement).permit(:title, :content, :created_by, :timezone)
+  end
+
+  def map_timezone(tz)
+    return "UTC" if tz.blank?
+
+    {
+      "Japan"         => "Asia/Tokyo",
+      "US"            => "America/New_York",
+      "UK"            => "Europe/London",
+      "France"        => "Europe/Paris",
+      "Germany"       => "Europe/Berlin",
+      "Russia"        => "Europe/Moscow",
+      "China"         => "Asia/Shanghai",
+      "Singapore"     => "Asia/Singapore",
+      "Hong Kong"     => "Asia/Hong_Kong",
+      "Thailand"      => "Asia/Bangkok",
+      "South Korea"   => "Asia/Seoul",
+      "Asia/Calcutta" => "Asia/Kolkata",
+      "Australia"     => "Australia/Sydney"
+    }[tz] || tz # fallback: assume it's already a valid IANA timezone
+  end
 end
