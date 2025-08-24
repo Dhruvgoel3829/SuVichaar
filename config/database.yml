@@ -1,10 +1,7 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  host: localhost
-  username: dhruv
-  password: 3829
-  pool: 5
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
   <<: *default
@@ -16,6 +13,9 @@ test:
 
 production:
   <<: *default
-  database: suvichaar_production
-  username: <%= ENV["PGUSER"] %>
-  password: <%= ENV["PGPASSWORD"] %>
+  url: <%= ENV['DATABASE_URL'] %>
+
+  # Add this to satisfy Action Cable / Solid Cable
+  cable:
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] %>
