@@ -12,10 +12,11 @@ test:
   database: suvichaar_test
 
 production:
-  <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
+  primary:
+    <<: *default
+    url: <%= ENV["DATABASE_URL"] %>
 
-  # Add this to satisfy Action Cable / Solid Cable
   cable:
     <<: *default
-    url: <%= ENV['DATABASE_URL'] %>
+    url: <%= ENV["DATABASE_URL"] %>
+
